@@ -9,7 +9,7 @@ app. use(express. json())
 app.use(cors())
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.i1uhr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.i1uhr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -35,6 +35,11 @@ async function run() {
         console.log(addCar);
         const result = await carRentalCollection.insertOne(addCar);
         res.send(result);
+    })
+
+    app.get("/all-cars", async (req, res) => {
+      const allCars = await carRentalCollection.find().toArray();
+      res.send(allCars);
     })
 
     // Send a ping to confirm a successful connection
